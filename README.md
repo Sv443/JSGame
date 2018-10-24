@@ -1,2 +1,2 @@
 # JSGame
-A Game Making Framework for JavaScript that doesn't cover all bases but offers a few feature that make game developing on JS easier
+A Game Making Framework for JavaScript that offers a few features that make game developing in JavaScript easier
