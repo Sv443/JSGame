@@ -1,1 +1,150 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="jsgame.js" jsg_disable_watermark="false"></script>
+		<script src="otherCollision.js"></script>
+		<style>
+		body{
+			font-family:"Calibri";
+		}
+		img:not(.jsg_menuclosebtn){
+			border:1px solid black;
+		}
+		input[type="range"]{
+			background-color:#fff;padding:3px;
+		}
+		</style>
+	</head>
+	<body>
+		<h1><script>document.write(jsgi.name + " (v" + jsgi.version + ") by " + jsgi.author);</script></h1>
+		<h2><script>document.write(jsgi.desc);</script></h2>
+		<br><br><br><br><br><br><br><br>
+		
+		
+		<h2>Collision Detection</h2>
+		<div id="collision_detection_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			Only works on &lt;img&gt; tags yet<br><br><br><br>
+			<img id="coll-a" alt="coll-a" style="position:relative;left:0px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img id="coll-b" alt="coll-b"><br><br>
+			Colliding: <b><span id="trfa"></span></b><br><br>
+			Move coll-b <input id="coll-b_mover" type="range" min="-4" max="10" value="3.0" step="0.1">
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+		
+		
+		
+		
+		<h2>Raytracing</h2>
+		<div id="collision_detection_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			<br><br><br><br><br><br><br><br><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img class="rc_enemy" src="https://sv443.net/resources/images/blank.png" style="width:60px;height:20px;background-color:#aaa;">
+			<br><br><br><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img class="rc_enemy" src="https://sv443.net/resources/images/blank.png" style="width:100px;height:20px;background-color:#aaa;">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<div id="rc_center" style="display:inline-block;width:50px;height:50px;background-color:red;"></div>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img class="rc_enemy" src="https://sv443.net/resources/images/blank.png" style="width:50px;height:100px;background-color:#aaa;">
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img class="rc_enemy" src="https://sv443.net/resources/images/blank.png" style="width:10px;height:150px;background-color:#aaa;">
+			<br><br><br><br><br><br>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			<img class="rc_enemy" src="https://sv443.net/resources/images/blank.png" style="width:10px;height:20px;background-color:#aaa;">
+			<br><br><br><br><br><br>
+			
+			Rotate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input id="rayrotinput" type="range" min="-360" max="360" value="0"><button onclick="gebid('rayrotinput').value='0'">&lt</button><br>
+			Move anchor point <input id="moveanchorinput" type="range" min="-10" max="25" value="0" step="0.1"><button onclick="gebid('moveanchorinput').value='0'">&lt</button><br><br>
+			Ray Width <input id="raywidthinput" type="number" onchange="raywidthsh(this.value)" min="1" max="10" value="1"> px (default: 2)<br><br>
+			Ray Length <input id="raylengthinput" type="number" onchange="raylengthsh(this.value)" min="0" max="400" value="200" step="10"> px (default: 200)<br><br>
+			Show Ray <input id="rayrotshowhide" type="checkbox" onchange="rayrotsh(this.checked)"><br>
+			Show Colliders <input id="raycollshowhide" type="checkbox" onchange="raycollsh(this.checked)"><br>
+			Rotate Infinitely <input id="rayinfrotate" type="checkbox" onchange="rayinfrotsh(this.checked)"><br><br>
+			<button onclick="Ray.remove('rc_ray')">remove ray</button>
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br>
+		
+		
+		
+		
 
+		<h2>Animation</h2>
+		<div id="animation_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			<img id="anim1testelem" style="width:10em;height:10em;background-color:green;">
+			<img id="anim2testelem" style="width:10em;height:10em;background-color:green;">
+			<img id="anim3testelem" style="width:10em;height:10em;background-color:green;">
+			<br>
+
+			<button onclick="toggletestanim(1)" style="width:12em;">toggle on/off</button>
+			<button onclick="toggletestanim(2)" style="width:12em;">toggle on/off</button>
+			<button onclick="toggletestanim(3)" style="width:12em;">toggle on/off</button>
+			<br><br><br><br><br><br>
+
+			<img id="animidleplayerelem" style="width:12em;height:12em;">
+			<img id="animwalkplayerelem" style="width:12em;height:12em;"><br>
+			<a target="_blank" href="https://www.pinterest.de/pin/428827195759731182/">(source)</a>
+			<br><br>
+
+			Keep in mind that these are not videos or GIFs, but single images<br>
+			The &lt;img&gt;-tag's src attributes are changed on interval according to the provided frames<br>
+			Try inspecting the elements to see how the src's are changed
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+
+		<h2>Audio</h2>
+		<div id="audio_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			Audio Time: <span id="audtimedisp"></span>
+			<br><br>
+
+			<button onclick="Audio.play('testaudio')">play/unpause audio</button> <button onclick="Audio.pause('testaudio')">pause audio</button> <button onclick="Audio.stop('testaudio')">stop audio</button><br>
+			<button onclick="Audio.loop('testaudio', true)">enable loop</button> <button onclick="Audio.loop('testaudio', false)">disable loop</button><br><br>
+			Set audio time <input type="range" onchange="Audio.setTime('testaudio', this.value)" value="0" min="0" max="16" step="0.1"><br>
+			Volume <input type="range" id="audvolinput" value="1.0" min="0.0" max="1.0" step="0.01"> <span id="audiovoldisp"></span>
+			<br><br>
+
+			<a href="https://freesound.org/s/444398/" target="_blank">(Audio source)</a>
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+
+		<h2>Notifications</h2>
+		<div id="notif_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			<button onclick="Notif.grant()">grant permission</button><br><br>
+			<button onclick="Notif.send('Test Notification', 'click me to execute a function', 'https://picsum.photos/200/200/?random', function(){alert('click')})">send test notification</button><br><br>
+			<form action="#">Custom notification <input type="text" id="notiftitlein" placeholder="title" required> <input type="text" id="notifbodyin" placeholder="body" required> <input type="text" id="notifimgin" placeholder="image src"> <button onclick="sendcustomnotif()">send</button></form>
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+
+
+
+
+
+		<h2>Menu</h2>
+		<div id="menu_wrapper" style="background-color:#dcdcdc;padding:10px;">
+			<button onclick="newMenu()">make demo menu</button> <button onclick="Menu.open('test')">open demo menu</button><br>
+			<button onclick="Menu.theme('test', 'light')">light theme</button> <button onclick="Menu.theme('test', 'dark')">dark theme</button><br><br><br><br>
+			<form action="#" onsubmit="alert('you will be put back to the top. This is due to me being lazy and has nothing to do with the script.\nplease just scroll down again.');">Custom menu <input type="text" id="cmenu_title" placeholder="title" required> <input type="text" id="cmenu_ihtml" placeholder="innerHTML" required> <input max="100" type="number" id="cmenu_width" placeholder="width" required> % <input max="100" type="number" id="cmenu_height" placeholder="height" required> % <button onclick="makecustommenu()">create</button></form>
+			<button onclick="Menu.open('cm');">open custom menu</button><br>
+			<button onclick="Menu.theme('cm', 'light')">light theme</button> <button onclick="Menu.theme('cm', 'dark')">dark theme</button>
+		</div>
+		<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+
+		
+
+		<script src="jsgexamples.js"></script>
+	</body>
+</html>
