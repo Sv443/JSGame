@@ -3,7 +3,6 @@
 	<head>
 		<meta charset="UTF-8">
 		<script src="jsgame.js" jsg_disable_watermark="false"></script>
-		<script src="otherCollision.js"></script>
 		<style>
 		body{
 			font-family:"Calibri";
@@ -145,6 +144,170 @@
 
 		
 
-		<script src="jsgexamples.js"></script>
+		<script>
+			document.title=jsgi.name;
+
+
+gebid("rayrotshowhide").checked = true;
+gebid("raycollshowhide").checked = true;
+gebid("rayinfrotate").checked = false;
+
+setInterval(function() {
+    if (Coll.isColliding(gebid("coll-a"), gebid("coll-b"))) gebid("trfa").innerHTML = "<span style='color:green;'>true</span>";
+    else gebid("trfa").innerHTML = "<span style='color:red;'>false</span>";
+
+    gebid("coll-b").style.position = "relative";
+    gebid("coll-b").style.left = gebid("coll-b_mover").value + "%";
+
+    if (gebid("coll-a").style.left.replace("px", "") >= 200) gebid("coll-a").style.left = "0px";
+    else var f = 1;
+    gebid("coll-a").style.left = parseInt(gebid("coll-a").style.left) + f + "px";
+    if (!gebid("rayinfrotate").checked) rayrot(gebid("rayrotinput").value);
+
+    gebid("rc_center").style.transition = "left 0.15s linear, bottom 0.15s linear";
+    gebid("rc_center").style.left = (gebid("moveanchorinput").value) + "%";
+}, 25);
+
+Ray.cast("rc_ray", gebid("rc_center"), "200px", "2px", "0deg", gebcn("rc_enemy"), function(ret) {
+    if (ret) {
+        gebid("rc_center").style.backgroundColor = "green";
+    } else {
+        gebid("rc_center").style.backgroundColor = "red";
+    }
+}, 25, null, null);
+
+function rayrot(rot) {
+    Ray.rotate("rc_ray", rot + "deg", "linear");
+}
+
+function raywidthsh(value) {
+    if (value > 5000) alert("well done, you just broke it ðŸ™„\n\n(Reload to reset back to normal)");
+    Ray.changeAttribute("rc_ray", "width", value + "px");
+}
+
+function raylengthsh(value) {
+    Ray.changeAttribute("rc_ray", "length", value + "px");
+}
+
+function rayrotsh(checked) {
+    if (checked) gebid("jsg_ray_rc_ray").style.border = "1px solid black";
+    else if (!checked) gebid("jsg_ray_rc_ray").style.border = "0px solid black";
+}
+
+function raycollsh(checked) {
+    if (checked) {
+        for (var i = 0; i < gebcn("jsg_ray_rc_ray_raybcs").length; i++) {
+            gebcn("jsg_ray_rc_ray_raybcs")[i].style.border = "1px solid black";
+        }
+    } else if (!checked) {
+        for (var i = 0; i < gebcn("jsg_ray_rc_ray_raybcs").length; i++) {
+            gebcn("jsg_ray_rc_ray_raybcs")[i].style.border = "0px solid black";
+        }
+    }
+}
+
+var allowinfrot = false,
+    incc = 0;
+
+function rayinfrotsh(checked) {
+    if(checked) {
+        incc = 0;
+        allowinfrot = true;
+        setInterval(function() {
+            if (allowinfrot) {
+                Ray.rotate("rc_ray", incc + "deg", "linear");
+                incc++;
+            }
+        }, 25);
+    } else {
+        Ray.rotate("rc_ray", "0deg", "linear");
+        allowinfrot = false;
+    }
+}
+
+
+
+
+var testanim_states = ["1.png", "2.png", "3.png", "4.png"];
+
+
+Anim.new("testanim1", gebid("anim1testelem"), testanim_states, 1000);
+Anim.toggle("testanim1", "off");
+gebid("anim1testelem").style.backgroundColor = "red";
+
+Anim.new("testanim2", gebid("anim2testelem"), testanim_states, 500);
+Anim.toggle("testanim2", "off");
+gebid("anim2testelem").style.backgroundColor = "red";
+
+Anim.new("testanim3", gebid("anim3testelem"), testanim_states, 150);
+Anim.toggle("testanim3", "off");
+gebid("anim3testelem").style.backgroundColor = "red";
+
+
+function toggletestanim(id) {
+    if (gebid("anim" + id + "testelem").dataset.anim_toggled == "on") {
+        Anim.toggle("testanim" + id, "off");
+        gebid("anim" + id + "testelem").style.backgroundColor = "red";
+    }
+    else {
+        Anim.toggle("testanim" + id, "on");
+        gebid("anim" + id + "testelem").style.backgroundColor = "green";
+    }
+}
+
+
+var player_idle_animstates = ["anim/idle/0.png", "anim/idle/1.png"];
+var player_walk_animstates = ["anim/walk/0.png", "anim/walk/1.png", "anim/walk/2.png", "anim/walk/3.png", "anim/walk/4.png", "anim/walk/5.png", "anim/walk/6.png", "anim/walk/7.png"];
+
+Anim.new("playeranim", gebid("animidleplayerelem"), player_idle_animstates, 400);
+Anim.new("playeranim", gebid("animwalkplayerelem"), player_walk_animstates, 75);
+
+
+
+
+
+
+
+Audio.new("testaudio", "testaudio.wav", true);
+
+setInterval(audvol, 20);
+
+function audvol() {
+    Audio.volume('testaudio', gebid("audvolinput").value);
+    gebid("audiovoldisp").innerHTML=gebid("audvolinput").value;
+
+    try{gebid("audtimedisp").innerHTML=Math.round(parseFloat(Audio.getTime("testaudio")) * 10) / 10 + "s";}catch{}
+}
+
+
+
+
+
+function sendcustomnotif() {
+    Notif.send(gebid("notiftitlein").value, gebid("notifbodyin").value, gebid("notifimgin").value);
+}
+
+
+
+
+
+menu_innerhtml = "<div style='text-align:center;'><h3>This is the menu that gets made by the Menu.new() function of the Menu class</h3>"
++ "You can use the innerhtml argument to add <u>every</u> <sub>HTML</sub> <i>tag</i> <sup>you</sup> <s>want</s>.<br>"
++ "For example <button>buttons</button>, <input placeholder='inputs'> and even iframes:<br><br><iframe src='https://www.example.org'></iframe><br><br>"
++ "This can for example be used to make a settings menu:<br>"
++ "Music: <input type='range'><br>"
++ "SFX: <input type='range'><br>"
++ "Anti-Aliasing: <input type='checkbox' checked><br><br><br>"
++ "You can use the button in the top right or the ESC key to close this menu (fully configurable).</div>";
+
+function newMenu() {
+    // (id, title, innerhtml, width, height, border_rounded, closable_ESC, closable_btn, on_close, close_img_src)
+    Menu.new("test", "Menu Class", menu_innerhtml, 50, 70, true, true, true, function(){alert("closed");});
+}
+
+function makecustommenu() {
+    Menu.new("cm", gebid("cmenu_title").value, gebid("cmenu_ihtml").value, parseInt(gebid("cmenu_width").value), parseInt(gebid("cmenu_height").value), true, true, true);
+}
+		</script>
 	</body>
 </html>
